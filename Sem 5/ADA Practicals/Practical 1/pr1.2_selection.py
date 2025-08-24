@@ -1,67 +1,69 @@
-print("Name: Dave Pujan M.,\nEnrollment No.: 230130107024\n")
-
 import time
 import matplotlib.pyplot as plt
-import random
+from datetime import datetime
 
-# 🔁 Selection Sort Implementation
+# 🔍 Selection Sort Implementation
 def selection_sort(arr):
     n = len(arr)
     for i in range(n):
         min_idx = i
         for j in range(i+1, n):
-            if arr[min_idx] > arr[j]:
+            if arr[j] < arr[min_idx]:
                 min_idx = j
         arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
 
-# 📌 Fixed input size
-n = 500
-best_case = list(range(n))              # Already sorted
-worst_case = list(range(n, 0, -1))      # Reversed
-average_case = list(range(n))
-random.shuffle(average_case)           # Randomized
 
-# ⏱️ Timing Function
-def measure_time(data):
-    arr = data.copy()
-    start = time.time()
-    selection_sort(arr)
-    end = time.time()
-    return end - start
+# ------------------- Console Output -------------------
+print(f"Thu {datetime.now().strftime('%b %d %H:%M:%S %Y')}")
+print("Practical No : 2B")
+print("Implementation and Time Analysis of Selection Sort")
+print("Enrollment No : 230130107024")
+print("Name : Dave Pujan M.\n")
 
-# 🕒 Measure execution time for each case
-best_time = measure_time(best_case)
-average_time = measure_time(average_case)
-worst_time = measure_time(worst_case)
+# Input
+n = int(input("Enter number of elements: "))
+arr = []
 
-# 📊 Plotting Bar Graph
-cases = ['Best Case', 'Average Case', 'Worst Case']
-times = [best_time, average_time, worst_time]
-colors = ['green', 'orange', 'red']
+print("Enter array elements:")
+for i in range(n):
+    arr.append(int(input(f"Element {i+1}: ")))
 
-plt.figure(figsize=(12, 7))
-bars = plt.bar(cases, times, color=colors)
-plt.title("Selection Sort Time Complexity Analysis (n = 500)", fontsize=14)
-plt.ylabel("Time Taken (seconds)", fontsize=12)
+# Execution
+start_time = time.time()
+sorted_arr = selection_sort(arr.copy())
+end_time = time.time()
+exec_time = end_time - start_time
 
-# Annotate each bar with time
-for bar, t in zip(bars, times):
-    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.0005,
-             f"{t:.4f} s", ha='center', fontsize=10)
+print(f"\nSorted Array: {sorted_arr}")
+print(f"Execution Time: {exec_time:.6f} seconds")
 
-# 📝 Complexity Annotation on Plot
-complexity_details = (
-    "Selection Sort Time and Space Complexity:\n"
-    "Best Case:    O(n²)\n"
-    "Average Case: O(n²)\n"
-    "Worst Case:   O(n²)\n"
-    "Space Complexity: O(1) – In-place sorting\n"
-    "Stable: No"
+# ------------------- Chart -------------------
+plt.figure(figsize=(12, 6))
+bars = plt.bar(["Selection Sort"], [exec_time], color='teal')
+plt.ylabel("Execution Time (seconds)")
+plt.title("Time Analysis of Selection Sort")
+
+# Annotate bar
+for bar in bars:
+    height = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2., height + 0.00001, f"{height:.6f}s",
+             ha='center', fontsize=10)
+
+# Complexity details
+info = (
+    "Time Complexity:\n"
+    "  Best Case   : O(n^2)\n"
+    "  Average Case: O(n^2)\n"
+    "  Worst Case  : O(n^2)\n\n"
+    "Space Complexity:\n"
+    "  O(1) — In-place sorting\n\n"
+    f"Execution Time for n = {n}: {exec_time:.6f} seconds"
 )
 
-plt.text(2.1, max(times) * 0.6, complexity_details,
-         fontsize=10, bbox=dict(facecolor='lightyellow', alpha=0.9), verticalalignment='top')
+plt.text(0.6, exec_time * 0.5, info,
+         fontsize=10, bbox=dict(facecolor='lightyellow', edgecolor='black', boxstyle='round,pad=0.5'))
 
-plt.grid(axis='y', linestyle='--', alpha=0.5)
 plt.tight_layout()
+plt.grid(axis='y', linestyle='--', alpha=0.6)
 plt.show()

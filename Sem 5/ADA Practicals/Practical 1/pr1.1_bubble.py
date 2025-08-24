@@ -1,65 +1,68 @@
-print("Name: Dave Pujan M.,\nEnrollment No.: 230130107024\n")
-
 import time
 import matplotlib.pyplot as plt
+from datetime import datetime
+import random
 
-# 🔁 Bubble Sort Algorithm
+# 🫧 Bubble Sort Implementation
 def bubble_sort(arr):
     n = len(arr)
-    for i in range(n):
-        swapped = False  # optimization for best case
-        for j in range(0, n-i-1):
-            if arr[j] > arr[j+1]:
-                arr[j], arr[j+1] = arr[j+1], arr[j]
-                swapped = True
-        if not swapped:
-            break
+    for i in range(n - 1):
+        for j in range(n - i - 1):
+            if arr[j] > arr[j + 1]:
+                arr[j], arr[j + 1] = arr[j + 1], arr[j]
+    return arr
 
-# 📌 Fixed Input Size
-size = 500
-best_case = list(range(size))  # Already sorted (Best)
-worst_case = list(range(size, 0, -1))  # Reverse sorted (Worst)
-avg_case = list(range(size))
-import random
-random.shuffle(avg_case)  # Random order (Average)
 
-# 🕒 Measure Time
-def time_bubble_sort(arr):
-    start = time.time()
-    bubble_sort(arr.copy())
-    return time.time() - start
+# ------------------- Console Output -------------------
+print(f"Thu {datetime.now().strftime('%b %d %H:%M:%S %Y')}")
+print("Practical No : 2A")
+print("Implementation and Time Analysis of Bubble Sort")
+print("Enrollment No : 230130107024")
+print("Name : Dave Pujan M.\n")
 
-best_time = time_bubble_sort(best_case)
-avg_time = time_bubble_sort(avg_case)
-worst_time = time_bubble_sort(worst_case)
+# Input
+n = int(input("Enter number of elements: "))
+arr = []
 
-# 📊 Plotting
-cases = ['Best Case', 'Average Case', 'Worst Case']
-times = [best_time, avg_time, worst_time]
+print("Enter array elements:")
+for i in range(n):
+    arr.append(int(input(f"Element {i+1}: ")))
 
-plt.figure(figsize=(12, 7))
-bars = plt.bar(cases, times, color=['green', 'orange', 'red'])
-plt.title("Bubble Sort Time Complexity Analysis (n = 500)", fontsize=14)
-plt.ylabel("Time Taken (seconds)", fontsize=12)
+# Execution
+start_time = time.time()
+sorted_arr = bubble_sort(arr.copy())
+end_time = time.time()
+exec_time = end_time - start_time
 
-# Annotate bars with time
-for bar, time_val in zip(bars, times):
-    plt.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.001,
-             f"{time_val:.4f} s", ha='center', fontsize=10)
+print(f"\nSorted Array: {sorted_arr}")
+print(f"Execution Time: {exec_time:.6f} seconds")
 
-# 📝 Complexity Details on Chart
-complexity_text = (
-    "Bubble Sort Time and Space Complexity:\n"
-    "Best Case:    O(n)     → Already Sorted\n"
-    "Average Case: O(n²)\n"
-    "Worst Case:   O(n²)    → Reversed\n"
-    "Space Complexity: O(1) – In-place\n"
-    "Stable: Yes"
+# ------------------- Chart -------------------
+plt.figure(figsize=(12, 6))
+bars = plt.bar(["Bubble Sort"], [exec_time], color='teal')
+plt.ylabel("Execution Time (seconds)")
+plt.title("Time Analysis of Bubble Sort")
+
+# Annotate bar
+for bar in bars:
+    height = bar.get_height()
+    plt.text(bar.get_x() + bar.get_width()/2., height + 0.00001, f"{height:.6f}s",
+             ha='center', fontsize=10)
+
+# Complexity details
+info = (
+    "Time Complexity:\n"
+    "  Best Case   : O(n)   (already sorted array)\n"
+    "  Average Case: O(n^2)\n"
+    "  Worst Case  : O(n^2)\n\n"
+    "Space Complexity:\n"
+    "  O(1) — In-place sorting\n\n"
+    f"Execution Time for n = {n}: {exec_time:.6f} seconds"
 )
 
-plt.text(2.1, max(times)*0.6, complexity_text,
-         fontsize=10, bbox=dict(facecolor='lightyellow', alpha=0.9), verticalalignment='top')
+plt.text(0.6, exec_time * 0.5, info,
+         fontsize=10, bbox=dict(facecolor='lightyellow', edgecolor='black', boxstyle='round,pad=0.5'))
 
 plt.tight_layout()
-plt.grid(axis='y', linestyle='--', alpha=0.5)
+plt.grid(axis='y', linestyle='--', alpha=0.6)
 plt.show()
